@@ -4,7 +4,6 @@ import com.epam.training.gen.ai.data.ChatRoleMessage;
 import com.epam.training.gen.ai.repository.ChatHistoryRepository;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
-import com.microsoft.semantickernel.services.chatcompletion.AuthorRole;
 import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionService;
 import com.microsoft.semantickernel.services.chatcompletion.ChatHistory;
 import com.microsoft.semantickernel.services.chatcompletion.ChatMessageContent;
