@@ -1,0 +1,57 @@
+### Simple Chat: Question One
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+  "input": "Please please tell me a little bit about yourself"
+}
+
+### Simple Chat: Question Two
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+  "input": "What the weather today in Kyiv Ukraine?"
+}
+
+### Simple Chat: Question Three
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+  "input": "What the Answer to the Ultimate Question of Life, the Universe, and Everything?"
+}
+
+### History Chat: New conversation Question One
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "What the Answer to the Ultimate Question of Life, the Universe, and Everything?"
+}
+
+### History Chat: Continue Question Two
+PUT http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "chatId": "<provide here chatId from previous response>",
+  "input": "Please tell me more about the big supercomputer that gives the answer"
+}
+
+### History Chat: Continue Question Three
+PUT http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "chatId": "<provide here chatId from previous response>",
+  "input": "Who played the main roles in this film?"
+}
+
+### History Chat: New conversation Two
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "How many active scientist stations are there in the Antarctica?"
+}
