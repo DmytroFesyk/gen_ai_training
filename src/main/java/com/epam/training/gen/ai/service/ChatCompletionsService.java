@@ -50,10 +50,12 @@ public class ChatCompletionsService {
 
         chatHistory.addAll(chat);
 
-        if (chatHistory.getMessages().size() > historyLimit){
+        val historyMessages = chatHistory.getMessages();
+
+        if (historyMessages.size() > historyLimit){
             chatHistory = new ChatHistory(
-                    chatHistory.getMessages().stream()
-                            .skip(Math.max(chat.size() - historyLimit, 0))
+                    historyMessages.stream()
+                            .skip(Math.max(historyMessages.size() - historyLimit, 0))
                             .toList()
             );
         }
