@@ -4,5 +4,7 @@ import java.util.UUID;
 
 public record ChatWithHistoryRequest(
         UUID chatId,
+        PromptParameters promptParameters,
         String input
-) {}
+) {
+}

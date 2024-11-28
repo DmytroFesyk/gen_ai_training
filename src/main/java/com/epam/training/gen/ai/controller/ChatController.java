@@ -24,7 +24,7 @@ public class ChatController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ChatSimpleResponse chat(@RequestBody ChatSimpleRequest request) {
-        return new ChatSimpleResponse(chatCompletionsService.complete(request.input()));
+        return new ChatSimpleResponse(chatCompletionsService.complete(request.input(),request.promptParameters()));
     }
 
     @PostMapping(value = "/with-history", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,7 +32,7 @@ public class ChatController {
         var chatId = UUID.randomUUID();
         return new ChatWithHistoryResponse(
                 chatId,
-                chatCompletionsService.completeWithHistory(request.input(), chatId)
+                chatCompletionsService.completeWithHistory(request.input(), chatId, request.promptParameters())
         );
     }
 
@@ -40,7 +40,7 @@ public class ChatController {
     public ChatWithHistoryResponse chatWithHistory(@RequestBody ChatWithHistoryRequest request) {
         return new ChatWithHistoryResponse(
                 request.chatId(),
-                chatCompletionsService.completeWithHistory(request.input(), request.chatId())
+                chatCompletionsService.completeWithHistory(request.input(), request.chatId(), request.promptParameters())
         );
     }
 }
