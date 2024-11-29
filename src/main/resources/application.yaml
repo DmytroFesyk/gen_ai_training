@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: local
+
+app:
+  gen-ai:
+    openai-client:
+      key: ${OPEN_AI_KEY}
+      endpoint: ${OPEN_AI_ENDPOINT}
+      deployment-name: ${OPEN_AI_DEPLOYMENT_NAME}
+    temperature: 0.8
+    history-limit: 10
+
