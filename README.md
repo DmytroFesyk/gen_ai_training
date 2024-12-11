@@ -19,6 +19,7 @@
         history-limit: 5
 ```
 4. Run the SpringBoot Application. The application would start on the port 8080 by default.
-5. Test the application by sending REST requests, you could find already prepared requests in the `Task<task_number>_request_test.http` file.
+5. Check available models by calling http://localhost:8080/available-models
+6. Test the application by sending various of REST requests, you could find already prepared requests in the `Task<task_number>_request_test.http` file.
 > [!NOTE]  
 > If you want to continue cheating within the same context, you should use the chat/with-history endpoint and keep the same `chatId` in the request body with the PUT request.

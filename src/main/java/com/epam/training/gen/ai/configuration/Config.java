@@ -10,10 +10,14 @@ import com.microsoft.semantickernel.orchestration.PromptExecutionSettings;
 import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionService;
 import com.microsoft.semantickernel.services.chatcompletion.ChatHistory;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
+import com.epam.training.gen.ai.service.ChatCompletionsConfigurationProvider;
+
+import java.util.HashMap;
 
 @Configuration
 @EnableConfigurationProperties(GenAiConfigurationProperties.class)
@@ -40,7 +44,7 @@ public class Config {
     }
 
     @Bean
-    public ChatCompletionService chatCompletionService(OpenAIAsyncClient openAIAsyncClient) {
+    public ChatCompletionService defaultChatCompletionService(OpenAIAsyncClient openAIAsyncClient) {
         return OpenAIChatCompletion.builder()
                 .withModelId(genAiConfigurationProperties.openaiClient().deploymentName())
                 .withOpenAIAsyncClient(openAIAsyncClient)
@@ -48,10 +52,15 @@ public class Config {
     }
 
     @Bean
-    public Kernel kernel(ChatCompletionService chatCompletionService) {
+    public Kernel defaultkernel(ChatCompletionService chatCompletionService) {
         return Kernel.builder()
                 .withAIService(ChatCompletionService.class, chatCompletionService)
                 .build();
+    }
+
+    @Bean
+    public ChatCompletionsConfigurationProvider chatCompletionsConfigurationProvider(OpenAIAsyncClient openAIAsyncClient) {
+        return new ChatCompletionsConfigurationProvider(openAIAsyncClient);
     }
 
     @Bean

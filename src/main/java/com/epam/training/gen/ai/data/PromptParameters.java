@@ -1,6 +1,7 @@
 package com.epam.training.gen.ai.data;
 
 public record PromptParameters(
-        Double temperature
+        Double temperature,
+        String modelId
 ) {
 }
