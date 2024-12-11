@@ -2,11 +2,9 @@ package com.epam.training.gen.ai.controller.validator;
 
 import com.epam.training.gen.ai.data.PromptParameters;
 import com.epam.training.gen.ai.service.EpamDialService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Validator;
 

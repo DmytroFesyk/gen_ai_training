@@ -2,7 +2,6 @@ package com.epam.training.gen.ai.configuration;
 
 import com.epam.training.gen.ai.cleint.EpamDicalClient;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
