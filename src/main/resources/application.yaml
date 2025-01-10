@@ -7,7 +7,9 @@ app:
     openai-client:
       key: ${OPEN_AI_KEY}
       endpoint: ${OPEN_AI_ENDPOINT}
-      deployment-name: ${OPEN_AI_DEPLOYMENT_NAME}
+      deployment-name: gpt-35-turbo
     temperature: 0.8
-    history-limit: 10
+    history-limit: 20
+    non-text-models: dall-e-3,imagegeneration@005,stability.stable-diffusion-xl
+
 

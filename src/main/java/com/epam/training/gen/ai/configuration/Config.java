@@ -3,6 +3,7 @@ package com.epam.training.gen.ai.configuration;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.epam.training.gen.ai.service.ChatCompletionsConfigurationProvider;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
@@ -40,7 +41,7 @@ public class Config {
     }
 
     @Bean
-    public ChatCompletionService chatCompletionService(OpenAIAsyncClient openAIAsyncClient) {
+    public ChatCompletionService defaultChatCompletionService(OpenAIAsyncClient openAIAsyncClient) {
         return OpenAIChatCompletion.builder()
                 .withModelId(genAiConfigurationProperties.openaiClient().deploymentName())
                 .withOpenAIAsyncClient(openAIAsyncClient)
@@ -48,10 +49,15 @@ public class Config {
     }
 
     @Bean
-    public Kernel kernel(ChatCompletionService chatCompletionService) {
+    public Kernel defaultkernel(ChatCompletionService chatCompletionService) {
         return Kernel.builder()
                 .withAIService(ChatCompletionService.class, chatCompletionService)
                 .build();
+    }
+
+    @Bean
+    public ChatCompletionsConfigurationProvider chatCompletionsConfigurationProvider(OpenAIAsyncClient openAIAsyncClient) {
+        return new ChatCompletionsConfigurationProvider(openAIAsyncClient);
     }
 
     @Bean

@@ -24,20 +24,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChatCompletionsService {
 
-    private final ChatCompletionService chatCompletionService;
-    private final Kernel kernel;
-    private final InvocationContext invocationContext;
+    private final ChatCompletionService defaultChatCompletionService;
+    private final Kernel defaultKernel;
+    private final InvocationContext defaultInvocationContext;
     private final ChatHistory chatHistory;
     private final ChatHistoryRepository chatHistoryRepository;
+    private final ChatCompletionsConfigurationProvider configProvider;
     @Value("${app.gen-ai.history-limit}")
     private int historyLimit;
 
     public String complete(String prompt, PromptParameters promptParameters) {
         chatHistory.addUserMessage(prompt);
-        return Objects.requireNonNull(
-                        chatCompletionService
-                                .getChatMessageContentsAsync(chatHistory, kernel, getInvocationContext(promptParameters))
-                                .block())
+        return executeCompletion(chatHistory, promptParameters)
                 .stream()
                 .map(ChatMessageContent::getContent)
                 .collect(Collectors.joining(System.lineSeparator()));
@@ -46,10 +44,7 @@ public class ChatCompletionsService {
     public List<ChatRoleMessage> completeWithHistory(String prompt, UUID chatId, PromptParameters promptParameters) {
         var chatHistory = chatHistoryRepository.getChatHistory(chatId);
         chatHistory.addUserMessage(prompt);
-        val chat = Objects.requireNonNull(
-                chatCompletionService
-                        .getChatMessageContentsAsync(chatHistory, kernel, getInvocationContext(promptParameters))
-                        .block());
+        val chat = executeCompletion(chatHistory, promptParameters);
 
         chatHistory.addAll(chat);
 
@@ -70,10 +65,32 @@ public class ChatCompletionsService {
                 .collect(Collectors.toList());
     }
 
+    private List<ChatMessageContent<?>> executeCompletion(ChatHistory chatHistory, PromptParameters promptParameters) {
+        val chatCompletionService = getChatCompletionService(promptParameters);
+        return Objects.requireNonNull(
+                        chatCompletionService
+                                .getChatMessageContentsAsync(chatHistory, getKernel(promptParameters), getInvocationContext(promptParameters))
+                                .block());
+    }
+
+    private ChatCompletionService getChatCompletionService(PromptParameters promptParameters) {
+        return Optional.ofNullable(promptParameters)
+                .map(PromptParameters::modelId)
+                .map(configProvider::getChatCompletion)
+                .orElse(defaultChatCompletionService);
+    }
+
+    private Kernel getKernel(PromptParameters promptParameters) {
+        return Optional.ofNullable(promptParameters)
+                .map(PromptParameters::modelId)
+                .map(configProvider::getKernel)
+                .orElse(defaultKernel);
+    }
+
     private InvocationContext getInvocationContext(PromptParameters promptParameters) {
         return Optional.ofNullable(promptParameters)
                 .map(PromptParameters::temperature)
-                .map(temperature -> InvocationContext.copy(invocationContext)
+                .map(temperature -> InvocationContext.copy(defaultInvocationContext)
                         .withPromptExecutionSettings(
                                 PromptExecutionSettings.builder()
                                         .withTemperature(temperature)
@@ -81,6 +98,6 @@ public class ChatCompletionsService {
                         )
                         .build()
                 )
-                .orElse(invocationContext);
+                .orElse(defaultInvocationContext);
     }
 }
