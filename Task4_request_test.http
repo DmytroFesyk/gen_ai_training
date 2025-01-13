@@ -1,0 +1,56 @@
+### Simple Chat common question: Question One
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+  "input": "Please please tell me a little bit about yourself"
+}
+
+### Simple Chat question about weather: Question Two
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+  "input": "What the weather today in Kyiv Ukraine?"
+}
+
+### History Chat question about weather with with country and city name: New conversation One
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "What the weather today in Kyiv Ukraine?"
+}
+
+### History Chat question about weather with only city name: New conversation One
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "What the weather today in Beijing?"
+}
+
+### History Chat question about weather with coordinates: New conversation One
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "What the weather today in the city located on coordinates latitude 10.5 longitude -66.9167 ?"
+}
+
+### History Chat question with forecust should not support: New conversation One
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "Could you please provide forecast what will the weather be in Beijing in 5 days?"
+}
+
+### History Chat question with forecust should not support: New conversation Two
+POST http://localhost:8080/chat/with-history
+Content-Type: application/json
+
+{
+  "input": "Could you please provide forecast what will the weather be in Beijing tomorrow?"
+}
+
