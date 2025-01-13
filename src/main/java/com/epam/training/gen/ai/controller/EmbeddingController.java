@@ -34,7 +34,7 @@ public class EmbeddingController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Stream<EmbeddingsFindResponse> findEmbeddings(@RequestBody EmbeddingsFindRequest request) {
-        return embeddingService.findEmbedding(request.input(), 1.0 - request.maxDistance())
+        return embeddingService.findEmbedding(request.input(), 1.0 - request.maxDistance(), request.limit())
                 .stream()
                 .map(document -> new EmbeddingsFindResponse(
                         Optional.ofNullable(document.getMetadata().get("distance"))

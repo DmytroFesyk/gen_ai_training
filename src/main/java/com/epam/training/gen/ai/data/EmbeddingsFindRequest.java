@@ -4,6 +4,7 @@ import java.util.List;
 
 public record EmbeddingsFindRequest(
         String input,
-        double maxDistance
+        double maxDistance,
+        int limit
 ) {
 }
