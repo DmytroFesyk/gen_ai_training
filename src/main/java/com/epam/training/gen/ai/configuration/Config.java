@@ -1,6 +1,7 @@
 package com.epam.training.gen.ai.configuration;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
+import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.epam.training.gen.ai.cleint.weather.WeatherClient;
@@ -17,10 +18,15 @@ import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionServic
 import com.microsoft.semantickernel.services.chatcompletion.ChatHistory;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.ai.azure.openai.AzureOpenAiEmbeddingOptions;
+import org.springframework.ai.document.MetadataMode;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.ai.azure.openai.AzureOpenAiEmbeddingModel;
+
 
 import java.util.List;
 
@@ -38,6 +44,14 @@ public class Config {
                 .credential(new AzureKeyCredential(genAiConfigurationProperties.openaiClient().key()))
                 .endpoint(genAiConfigurationProperties.openaiClient().endpoint())
                 .buildAsyncClient();
+    }
+
+    @Bean
+    public OpenAIClient openAIClient() {
+        return new OpenAIClientBuilder()
+                .credential(new AzureKeyCredential(genAiConfigurationProperties.openaiClient().key()))
+                .endpoint(genAiConfigurationProperties.openaiClient().endpoint())
+                .buildClient();
     }
 
     @Bean
@@ -82,5 +96,16 @@ public class Config {
     @RequestScope
     public ChatHistory pureChatHistory() {
         return new ChatHistory();
+    }
+
+    @Bean
+    public EmbeddingModel embeddingModel(OpenAIClient openAIClient) {
+
+        return new AzureOpenAiEmbeddingModel(openAIClient,
+                MetadataMode.EMBED,
+                AzureOpenAiEmbeddingOptions.builder()
+                        .withDeploymentName("text-embedding-ada-002")
+                        .withDimensions(1536)
+                        .build());
     }
 }

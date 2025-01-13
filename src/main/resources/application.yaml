@@ -1,9 +1,19 @@
 spring:
+  autoconfigure:
+    exclude: org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
   profiles:
     active: local
   jackson:
     deserialization:
       fail-on-unknown-properties: false
+  ai:
+    vectorstore:
+      qdrant:
+        host: localhost
+        port: 6334
+        collection-name: ai-embeddings
+        use-tls: false
+        initialize-schema: true
 app:
   gen-ai:
     openai-client:
