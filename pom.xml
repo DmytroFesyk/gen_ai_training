@@ -15,7 +15,7 @@
     <description>gen_ai_training</description>
     <properties>
         <java.version>21</java.version>
-        <semantickernel.version>1.2.2</semantickernel.version>
+        <semantickernel.version>1.4.2</semantickernel.version>
     </properties>
 
     <dependencyManagement>
@@ -107,7 +107,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-openai</artifactId>
-            <version>1.0.0-beta.11</version>
+            <version>1.0.0-beta.13</version>
         </dependency>
     </dependencies>
 

@@ -5,7 +5,9 @@ import com.epam.training.gen.ai.data.PromptParameters;
 import com.epam.training.gen.ai.repository.ChatHistoryRepository;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
+import com.microsoft.semantickernel.orchestration.InvocationReturnMode;
 import com.microsoft.semantickernel.orchestration.PromptExecutionSettings;
+import com.microsoft.semantickernel.services.chatcompletion.AuthorRole;
 import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionService;
 import com.microsoft.semantickernel.services.chatcompletion.ChatHistory;
 import com.microsoft.semantickernel.services.chatcompletion.ChatMessageContent;
@@ -35,7 +37,8 @@ public class ChatCompletionsService {
 
     public String complete(String prompt, PromptParameters promptParameters) {
         chatHistory.addUserMessage(prompt);
-        return executeCompletion(chatHistory, promptParameters)
+        val invocationContext = InvocationContext.copy(defaultInvocationContext).withReturnMode(InvocationReturnMode.LAST_MESSAGE_ONLY).build();
+        return executeCompletion(chatHistory, promptParameters, invocationContext)
                 .stream()
                 .map(ChatMessageContent::getContent)
                 .collect(Collectors.joining(System.lineSeparator()));
@@ -44,7 +47,9 @@ public class ChatCompletionsService {
     public List<ChatRoleMessage> completeWithHistory(String prompt, UUID chatId, PromptParameters promptParameters) {
         var chatHistory = chatHistoryRepository.getChatHistory(chatId);
         chatHistory.addUserMessage(prompt);
-        val chat = executeCompletion(chatHistory, promptParameters);
+        val chat = executeCompletion(chatHistory, promptParameters).stream()
+                .filter(chatMessageContent -> chatMessageContent.getAuthorRole() != AuthorRole.ASSISTANT || chatMessageContent.getContent() != null)
+                .toList();
 
         chatHistory.addAll(chat);
 
@@ -68,9 +73,17 @@ public class ChatCompletionsService {
     private List<ChatMessageContent<?>> executeCompletion(ChatHistory chatHistory, PromptParameters promptParameters) {
         val chatCompletionService = getChatCompletionService(promptParameters);
         return Objects.requireNonNull(
-                        chatCompletionService
-                                .getChatMessageContentsAsync(chatHistory, getKernel(promptParameters), getInvocationContext(promptParameters))
-                                .block());
+                chatCompletionService
+                        .getChatMessageContentsAsync(chatHistory, getKernel(promptParameters), getInvocationContext(promptParameters))
+                        .block());
+    }
+
+    private List<ChatMessageContent<?>> executeCompletion(ChatHistory chatHistory, PromptParameters promptParameters, InvocationContext initialInvocationContext) {
+        val chatCompletionService = getChatCompletionService(promptParameters);
+        return Objects.requireNonNull(
+                chatCompletionService
+                        .getChatMessageContentsAsync(chatHistory, getKernel(promptParameters), getInvocationContext(initialInvocationContext, promptParameters))
+                        .block());
     }
 
     private ChatCompletionService getChatCompletionService(PromptParameters promptParameters) {
@@ -88,9 +101,13 @@ public class ChatCompletionsService {
     }
 
     private InvocationContext getInvocationContext(PromptParameters promptParameters) {
+        return getInvocationContext(defaultInvocationContext, promptParameters);
+    }
+
+    private InvocationContext getInvocationContext(InvocationContext initialInvocationContext, PromptParameters promptParameters) {
         return Optional.ofNullable(promptParameters)
                 .map(PromptParameters::temperature)
-                .map(temperature -> InvocationContext.copy(defaultInvocationContext)
+                .map(temperature -> InvocationContext.copy(initialInvocationContext)
                         .withPromptExecutionSettings(
                                 PromptExecutionSettings.builder()
                                         .withTemperature(temperature)
@@ -98,6 +115,6 @@ public class ChatCompletionsService {
                         )
                         .build()
                 )
-                .orElse(defaultInvocationContext);
+                .orElse(initialInvocationContext);
     }
 }

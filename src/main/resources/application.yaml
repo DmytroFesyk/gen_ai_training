@@ -1,15 +1,22 @@
 spring:
   profiles:
     active: local
-
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
 app:
   gen-ai:
     openai-client:
       key: ${OPEN_AI_KEY}
       endpoint: ${OPEN_AI_ENDPOINT}
-      deployment-name: gpt-35-turbo
+      deployment-name: gpt-4o
     temperature: 0.8
     history-limit: 20
     non-text-models: dall-e-3,imagegeneration@005,stability.stable-diffusion-xl
+
+external-clients:
+  weather:
+    url: https://api.weatherapi.com
+    key: 05a3118aa3af4e3fbc2222604251201
 
 
