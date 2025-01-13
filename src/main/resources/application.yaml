@@ -23,6 +23,9 @@ app:
     temperature: 0.8
     history-limit: 20
     non-text-models: dall-e-3,imagegeneration@005,stability.stable-diffusion-xl
+    embedding:
+      model: text-embedding-ada-002
+      dimensions: 1536
 
 external-clients:
   weather:

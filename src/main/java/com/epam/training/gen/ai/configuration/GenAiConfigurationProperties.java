@@ -6,13 +6,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record GenAiConfigurationProperties(
         OpenAiClientProperties openaiClient,
         double temperature,
-        int historyLimit
+        int historyLimit,
+        EmbeddingProperties embedding
 ) {
 
     record OpenAiClientProperties(
             String endpoint,
             String key,
             String deploymentName
+    ) {
+    }
+
+    record EmbeddingProperties(
+            String model,
+            int dimension
     ) {
     }
 }

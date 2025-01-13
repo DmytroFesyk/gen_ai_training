@@ -104,8 +104,8 @@ public class Config {
         return new AzureOpenAiEmbeddingModel(openAIClient,
                 MetadataMode.EMBED,
                 AzureOpenAiEmbeddingOptions.builder()
-                        .withDeploymentName("text-embedding-ada-002")
-                        .withDimensions(1536)
+                        .withDeploymentName(genAiConfigurationProperties.embedding().model())
+                        .withDimensions(genAiConfigurationProperties.embedding().dimension())
                         .build());
     }
 }
