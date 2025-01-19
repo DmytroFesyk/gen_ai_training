@@ -31,7 +31,7 @@ import org.springframework.ai.azure.openai.AzureOpenAiEmbeddingModel;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties({GenAiConfigurationProperties.class, ExternalRestClientsConfigurationProperties.class})
+@EnableConfigurationProperties({GenAiConfigurationProperties.class, ExternalRestClientsConfigurationProperties.class,KnowledgeBaseConfigurationProperties.class})
 @RequiredArgsConstructor
 public class Config {
 

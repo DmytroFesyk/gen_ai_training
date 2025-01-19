@@ -1,0 +1,66 @@
+### Upload information about Copilot to knowlage base"
+# @timeout 600
+POST http://localhost:8080/kb/upload-pdf
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Copilot.pdf"
+Content-Type: application/pdf
+
+< knowledgebase/Copilot.pdf
+--WebAppBoundary
+
+### Upload information about House cleaning for beginners to knowlage base"
+# @timeout 600
+POST http://localhost:8080/kb/upload-pdf
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Copilot.pdf"
+Content-Type: application/pdf
+
+< knowledgebase/Cleaning-for-beginners.pdf
+--WebAppBoundary
+
+
+### History Chat question about copilot: Should answer 93%
+POST http://localhost:8080/kb/with-history
+Content-Type: application/json
+
+{
+  "input": "How many of Fortune 500 companies use Power Automate?"
+}
+
+### History Chat question about copilot: Should answer [Create a flow, Modify a flow, Understand a flow]
+POST http://localhost:8080/kb/with-history
+Content-Type: application/json
+
+{
+  "input": "What ways could I engage Copilot in cloud flows?"
+}
+
+### History Chat question not related to information in KB: Should answer "I don't know"
+POST http://localhost:8080/kb/with-history
+Content-Type: application/json
+
+{
+  "input": "Please tell me about Beijing Olympic Games"
+}
+
+### History Chat question not related to information in KB: Should answer "I don't know"
+POST http://localhost:8080/kb/with-history
+Content-Type: application/json
+
+{
+  "input": "What the weather today in Kyiv Ukraine?"
+}
+
+### History Chat question about cleaning: Should contain information about `Adhesive Baits` and `Natural Remedies` ect.
+POST http://localhost:8080/kb/with-history
+Content-Type: application/json
+
+{
+  "input": "How can I eliminate unwanted insects, such as cockroaches, from my house?"
+}
+
+
