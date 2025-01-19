@@ -1,0 +1,47 @@
+### Create embeddings
+POST http://localhost:8080/embedding
+Content-Type: application/json
+
+{
+  "inputs": [
+    "Ukraine: Kyiv, Dnypro, Lviv",
+    "Canada: Toronto, Montreal, Vancouver",
+    "USA: New York, Los Angeles, Chicago",
+    "Germany: Berlin, Munich, Hamburg",
+    "France: Paris, Marseille, Lyon",
+    "Rainbow: Red, Orange, Yellow, Green, Blue, Indigo, Violet"
+  ]
+}
+### Find similarity
+GET http://localhost:8080/embedding
+Content-Type: application/json
+
+{
+  "input": "Green traffic light",
+  "maxDistance": 0.8,
+  "limit": 3
+
+}
+
+### Find similarity
+GET http://localhost:8080/embedding
+Content-Type: application/json
+
+{
+  "input": "Canada: Toronto, Montreal, Vancouver",
+  "maxDistance": 0.9,
+  "limit": 3
+
+}
+
+### Find similarity
+GET http://localhost:8080/embedding
+Content-Type: application/json
+
+{
+  "input": "Tesla",
+  "maxDistance": 0.9,
+  "limit": 10
+
+}
+
