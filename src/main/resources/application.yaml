@@ -6,6 +6,9 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
+  servlet.multipart:
+    max-file-size: 200MB
+    max-request-size: 200MB
   ai:
     vectorstore:
       qdrant:
@@ -20,12 +23,17 @@ app:
       key: ${OPEN_AI_KEY}
       endpoint: ${OPEN_AI_ENDPOINT}
       deployment-name: gpt-4o
-    temperature: 0.8
-    history-limit: 20
+    temperature: 0.2
+    history-limit: 50
     non-text-models: dall-e-3,imagegeneration@005,stability.stable-diffusion-xl
     embedding:
       model: text-embedding-ada-002
       dimensions: 1536
+  pdf:
+    page-number-to-concatenate: 2
+  knowledge-base:
+    threshold: 0.75
+    limit-topK: 1
 
 external-clients:
   weather:

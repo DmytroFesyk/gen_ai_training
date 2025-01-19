@@ -30,7 +30,7 @@ public class ChatCompletionsService {
     private final Kernel defaultKernel;
     private final InvocationContext defaultInvocationContext;
     private final ChatHistory chatHistory;
-    private final ChatHistoryRepository chatHistoryRepository;
+    protected final ChatHistoryRepository chatHistoryRepository;
     private final ChatCompletionsConfigurationProvider configProvider;
     @Value("${app.gen-ai.history-limit}")
     private int historyLimit;

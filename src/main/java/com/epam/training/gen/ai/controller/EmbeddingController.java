@@ -43,23 +43,4 @@ public class EmbeddingController {
                                 .orElse(0.0),
                         document.getContent()));
     }
-
-//    @PostMapping(value = "/with-history", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ChatWithHistoryResponse newChatWithHistory(@Valid @RequestBody ChatWithHistoryRequest request) {
-//        var chatId = UUID.randomUUID();
-//        return new ChatWithHistoryResponse(
-//                chatId,
-//                chatCompletionsService.completeWithHistory(request.input(), chatId, request.promptParameters())
-//        );
-//    }
-//
-//    @PutMapping(value = "/with-history", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ChatWithHistoryResponse chatWithHistory(@Valid @RequestBody ChatWithHistoryRequest request) {
-//        return new ChatWithHistoryResponse(
-//                request.chatId(),
-//                chatCompletionsService.completeWithHistory(request.input(), request.chatId(), request.promptParameters())
-//        );
-//    }
 }
